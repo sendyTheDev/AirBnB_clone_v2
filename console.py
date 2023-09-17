@@ -113,15 +113,45 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
+    def cleanWord(word):
+        """
+        check if word contains " or ' and remove them
+        """
+        if word and ("'" in word or '"' in word):
+            newWord = ''
+            for char in word:
+                if char == '"' or char == "'":
+                    newWord = newWord + ''
+                elif char == '_':
+                    newWord = newWord + ' '
+                else:
+                    newWord = newWord + char
+            return newWord
+        else:
+            if word.isdigit():
+                return int(word)
+            elif '.' in word:
+                return float(word)
+            elif isinstance(word, str):
+                return str(word)
+
     def do_create(self, args):
         """ Create an object of any class"""
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        args = args.split(' ')
+        if args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+        new_instance = HBNBCommand.classes[args[0]]()
+        i = 1
+        for _ in range(len(args) - 2):
+            key = (args[i].split('='))[0]
+            value = (args[i].split('='))[1]
+            i = i + 1
+            value = HBNBCommand.cleanWord(value)
+            setattr(new_instance, key, value)
         storage.save()
         print(new_instance.id)
         storage.save()
@@ -187,7 +217,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -319,6 +349,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
