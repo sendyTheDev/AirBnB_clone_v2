@@ -31,7 +31,7 @@ class FileStorage:
         """
         if obj:
             key = "{}.{}".format(type(obj).__name__, obj.id)
-            del self.__objects[key]1
+            del self.__objects[key]
 
     def reload(self):
         """Loads storage dictionary from file"""
