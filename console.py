@@ -120,20 +120,22 @@ class HBNBCommand(cmd.Cmd):
         if word and ("'" in word or '"' in word):
             newWord = ''
             for char in word:
-                if char == '"' or char == "'":
+                if char == "'" or char == '"':
                     newWord = newWord + ''
                 elif char == '_':
                     newWord = newWord + ' '
                 else:
                     newWord = newWord + char
-            return newWord
+            return str(newWord)
         else:
+            """
             if word.isdigit():
                 return int(word)
             elif '.' in word:
                 return float(word)
             elif isinstance(word, str):
-                return str(word)
+            """
+            return eval(word)
 
     def do_create(self, args):
         """ Create an object of any class"""
