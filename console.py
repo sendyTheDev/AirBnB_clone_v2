@@ -113,30 +113,6 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def cleanWord(word):
-        """
-        check if word contains " or ' and remove them
-        """
-        if word and ("'" in word or '"' in word):
-            newWord = ''
-            for char in word:
-                if char == "'" or char == '"':
-                    newWord = newWord + ''
-                elif char == '_':
-                    newWord = newWord + ' '
-                else:
-                    newWord = newWord + char
-            return str(newWord)
-        else:
-            """
-            if word.isdigit():
-                return int(word)
-            elif '.' in word:
-                return float(word)
-            elif isinstance(word, str):
-            """
-            return eval(word)
-
     def do_create(self, args):
         """ Create an object of any class"""
         if not args:
@@ -152,7 +128,11 @@ class HBNBCommand(cmd.Cmd):
             key = (args[i].split('='))[0]
             value = (args[i].split('='))[1]
             i = i + 1
-            value = HBNBCommand.cleanWord(value)
+            if value[0] == '"' and value[-1] == '"':
+                value = str(value[1:-1])
+                value = value.replace("_", " ")
+            else:
+                value = eval(value)
             setattr(new_instance, key, value)
         storage.save()
         print(new_instance.id)
