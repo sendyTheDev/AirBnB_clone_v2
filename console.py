@@ -133,7 +133,8 @@ class HBNBCommand(cmd.Cmd):
                 value = value.replace("_", " ")
             else:
                 value = eval(value)
-            setattr(new_instance, key, value)
+            if hasattr(new_instance, key):
+                setattr(new_instance, key, value)
         storage.save()
         print(new_instance.id)
         storage.save()
