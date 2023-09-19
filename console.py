@@ -10,6 +10,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+from os import getenv
 
 
 class HBNBCommand(cmd.Cmd):
@@ -29,6 +30,11 @@ class HBNBCommand(cmd.Cmd):
              'max_guest': int, 'price_by_night': int,
              'latitude': float, 'longitude': float
             }
+    keys = {
+        "BaseModel": ["id", "created_at", "updated_at"],
+        "City": ["id", "created_at", "updated_at", "state_id", "name"],
+        "State": ["id", "created_at", "updated_at", "name"]
+    }
 
     def preloop(self):
         """Prints if isatty is false"""
@@ -114,28 +120,35 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """ Create an object of any class"""
+        """Create an object of any class"""
         if not args:
             print("** class name missing **")
             return
-        args = args.split(' ')
-        if args[0] not in HBNBCommand.classes:
+        args_array = args.split()
+        class_name = args_array[0]
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args[0]]()
-        i = 1
-        for _ in range(len(args) - 2):
-            key = (args[i].split('='))[0]
-            value = (args[i].split('='))[1]
-            i = i + 1
-            if value[0] == '"' and value[-1] == '"':
-                value = str(value[1:-1])
-                value = value.replace("_", " ")
+        dict_params = {}
+        for param_index in range(1, len(args_array)):
+            param_array = args_array[param_index].split("=")
+            if len(param_array) == 2:
+                key = param_array[0]
+                if key not in HBNBCommand.keys[class_name]:
+                    continue
+                value = param_array[1]
+                if value[0] == '"' and value[-1] == '"':
+                    value = str(value[1:-1])
+                    value = value.replace("_", " ")
+                else:
+                    value = eval(value)
+                if value is not None:
+                    dict_params[key] = value
             else:
-                value = eval(value)
-            if hasattr(new_instance, key):
-                setattr(new_instance, key, value)
-        storage.save()
+                pass
+
+        new_instance = HBNBCommand.classes[class_name](**dict_params)
+        new_instance.save()
         print(new_instance.id)
 
     def help_create(self):
@@ -218,11 +231,11 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 print_list.append(str(v))
 
         print(print_list)
