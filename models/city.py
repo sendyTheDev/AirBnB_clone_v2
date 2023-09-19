@@ -14,7 +14,7 @@ class City(BaseModel, Base):
         name = Column('name', String(128), nullable=False)
         state_id = Column('state_id', String(60),
                           ForeignKey('states.id'), nullable=False)
-        places = relationship("place", cascade="all,delete", backref="cities")
+        places = relationship('Place', cascade="all,delete", backref="cities")
     else:
         state_id = ""
         name = ""
