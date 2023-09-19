@@ -33,7 +33,9 @@ class HBNBCommand(cmd.Cmd):
     keys = {
         "BaseModel": ["id", "created_at", "updated_at"],
         "City": ["id", "created_at", "updated_at", "state_id", "name"],
-        "State": ["id", "created_at", "updated_at", "name"]
+        "State": ["id", "created_at", "updated_at", "name"],
+        "User": ["id", "created_at", "updated_at", "email",
+                 "password", "first_name", "last_name"]
     }
 
     def preloop(self):
