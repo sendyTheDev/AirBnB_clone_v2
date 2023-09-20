@@ -41,7 +41,8 @@ class HBNBCommand(cmd.Cmd):
                   "number_bathrooms", "max_guest", "price_by_night",
                   "latitude", "longitude"],
         "Review": ["id", "created_at", "updated_at",
-                   "place_id", "user_id", "text"]
+                   "place_id", "user_id", "text"],
+        "Amenity": ["id", "created_at", "updated_at", "name"]
         }
 
     def preloop(self):
