@@ -4,7 +4,6 @@ from models.base_model import BaseModel, Base
 from os import getenv
 from sqlalchemy import Column, Integer, Float, String, ForeignKey
 from sqlalchemy.orm import relationship
-from sqlalchemy.ext.declarative import declarative_base
 import shlex
 
 
@@ -23,13 +22,25 @@ class Place(BaseModel, Base):
         price_by_night = Column(Integer, nullable=False, default=0)
         latitude = Column(Float, nullable=False)
         longitude = Column(Float, nullable=False)
-        reviews = relationship("Review", cascade='all, delete, delete-orphan',
+        reviews = relationship("Review", cascade='all, delete',
                                backref="place")
 
         # amenities = relationship("Amenity", secondary=place_amenity,
         # viewonly=False,
         # back_populates="place_amenities")
     else:
+        city_id = ""
+        user_id = ""
+        name = ""
+        description = ""
+        number_rooms = 0
+        number_bathrooms = 0
+        max_guest = 0
+        price_by_night = 0
+        latitude = 0.0
+        longitude = 0.0
+        amenity_ids = []
+
         @property
         def reviews(self):
             """ Returns list of reviews.id """
