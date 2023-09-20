@@ -39,7 +39,9 @@ class HBNBCommand(cmd.Cmd):
         "Place": ["id", "created_at", "updated_at", "city_id",
                   "user_id", "name", "description", "number_rooms",
                   "number_bathrooms", "max_guest", "price_by_night",
-                  "latitude", "longitude"]
+                  "latitude", "longitude"],
+        "Review": ["id", "created_at", "updated_at", "text",
+                   "place_id", "user_id"]
         }
 
     def preloop(self):
