@@ -11,11 +11,13 @@ class City(BaseModel, Base):
     __tablename__ = 'cities'
 
     if getenv('HBNB_TYPE_STORAGE') == 'db':
+        """ use database storage """
         name = Column('name', String(128), nullable=False)
         state_id = Column('state_id', String(60),
                           ForeignKey('states.id'), nullable=False)
         places = relationship('Place', cascade="all, delete, delete-orphan",
                               backref="cities")
     else:
+        """ use file storage """
         state_id = ""
         name = ""

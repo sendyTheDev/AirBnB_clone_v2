@@ -13,9 +13,12 @@ from models.review import Review
 from os import getenv
 
 if getenv('HBNB_TYPE_STORAGE') == 'db':
+    """ uses database storage """
     from models.engine.db_storage import DBStorage
     storage = DBStorage()
 else:
+    """ uses file storage """
     from models.engine.file_storage import FileStorage
     storage = FileStorage()
+
 storage.reload()

@@ -9,11 +9,14 @@ from os import getenv
 class State(BaseModel, Base):
     """ State class """
     __tablename__ = 'states'
+    
     if getenv('HBNB_TYPE_STORAGE') == 'db':
+        """ use database storage """
         name = Column('name', String(128), nullable=False)
         cities = relationship('City', backref='state',
                               cascade='all, delete-orphan')
     else:
+        """ use file storage """
         name = ''
 
     @property

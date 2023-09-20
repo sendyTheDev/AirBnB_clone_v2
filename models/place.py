@@ -6,6 +6,7 @@ from sqlalchemy import Column, Integer, Float, String, ForeignKey, Table
 from sqlalchemy.orm import relationship
 import shlex
 
+""" table that handles many to many rlship of place n amenity """
 place_amenity = Table('place_amenity', Base.metadata,
                       Column('place_id', String(60), ForeignKey('places.id'),
                              primary_key=True, nullable=False),
@@ -20,6 +21,7 @@ class Place(BaseModel, Base):
     __tablename__ = 'places'
 
     if getenv('HBNB_TYPE_STORAGE') == 'db':
+        """ use database storage """
         city_id = Column(String(60), ForeignKey("cities.id"), nullable=False)
         user_id = Column(String(60), ForeignKey("users.id"), nullable=False)
         name = Column(String(128), nullable=False)
@@ -37,6 +39,7 @@ class Place(BaseModel, Base):
                                  viewonly=False,
                                  back_populates="place_amenities")
     else:
+        """ use file stoorage """
         city_id = ""
         user_id = ""
         name = ""

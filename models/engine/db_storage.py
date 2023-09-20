@@ -14,13 +14,16 @@ from os import getenv
 
 
 class DBStorage:
-    """Class Docs"""
+    """Database class initialization"""
 
     __engine = None
     __session = None
 
     def __init__(self):
-        """Function Docs"""
+        """
+        Initialize atributes to be used with the database
+        they are environment variables
+        """
         hb_user = getenv("HBNB_MYSQL_USER")
         hb_pwd = getenv("HBNB_MYSQL_PWD")
         hb_host = getenv("HBNB_MYSQL_HOST")
