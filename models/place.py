@@ -5,6 +5,7 @@ from os import getenv
 from sqlalchemy import Column, Integer, Float, String, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
+import shlex
 
 
 class Place(BaseModel, Base):
@@ -22,8 +23,8 @@ class Place(BaseModel, Base):
         price_by_night = Column(Integer, nullable=False, default=0)
         latitude = Column(Float, nullable=False)
         longitude = Column(Float, nullable=False)
-        # reviews = relationship("Review", cascade='all, delete,
-        # delete-orphan', backref="place")
+        reviews = relationship("Review", cascade='all, delete, delete-orphan',
+                               backref="place")
 
         # amenities = relationship("Amenity", secondary=place_amenity,
         # viewonly=False,
@@ -45,6 +46,7 @@ class Place(BaseModel, Base):
                     result.append(elem)
             return (result)
 
+        '''
         @property
         def amenities(self):
             """ Returns list of amenity ids """
@@ -55,3 +57,4 @@ class Place(BaseModel, Base):
             """ Appends amenity ids to the attribute """
             if type(obj) is Amenity and obj.id not in self.amenity_ids:
                 self.amenity_ids.append(obj.id)
+        '''
