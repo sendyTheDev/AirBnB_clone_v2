@@ -19,33 +19,35 @@ def hello():
     return 'HBNB'
 
 
-@app.route('/c/<text>')
-def c_text(text):
-    """replace text with variable"""
-    text = text.replace('_', ' ')
-    return 'C {}'.format(text)
+@app.route("/hbnb", strict_slashes=False)
+def hbnb():
+    """ def doc """
+    return "HBNB"
 
 
-@app.route('/python/')
-@app.route('/python/<text>')
-def python_text(text='is cool'):
-    """replace more texts with variables"""
-    text = text.replace('_', ' ')
-    return 'Python {}'.format(text)
+@app.route('/c/<text>', strict_slashes=False)
+def c(text):
+    """ def doc """
+    return 'c {}'.format(text.replace("_", " "))
 
 
-@app.route('/number/<int:n>')
-def number_text(n):
-    """replace text with an int"""
-    n = str(n)
+@app.route('/python', defaults={'text': 'is cool'}, strict_slashes=False)
+@app.route('/python/<text>', strict_slashes=False)
+def python(text):
+    """ slash"""
+    return 'Python {}'.format(text.replace("_", " "))
+
+
+@app.route('/number/<int:n>', strict_slashes=False)
+def number(n):
+    """ def doc """
     return '{} is a number'.format(n)
 
 
 @app.route('/number_template/<int:n>')
-def html_num(n):
-    """display html if n is an int"""
-    n = str(n)
-    return render_template('5-number.html', n=n)
+def number_template(n):
+    return render_template('5-number.html', number=n)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
